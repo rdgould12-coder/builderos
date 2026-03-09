@@ -1,0 +1,81 @@
+"use client";
+
+import { useState } from "react";
+import { Reveal } from "@/components/ui/reveal";
+import { CourseCard } from "@/components/marketing/course-card";
+import { COURSES } from "@/data/courses";
+
+const TIERS = ["All", "foundations", "websites", "apps", "automation", "advanced"] as const;
+const TIER_LABELS: Record<string, string> = {
+  All: "All",
+  foundations: "Foundations",
+  websites: "Websites",
+  apps: "Apps",
+  automation: "Automation",
+  advanced: "Advanced",
+};
+
+export function CourseCatalog() {
+  const [filter, setFilter] = useState("All");
+  const [search, setSearch] = useState("");
+
+  const filtered = COURSES.filter(
+    (c) =>
+      (filter === "All" || c.tier === filter) &&
+      (search === "" || c.title.toLowerCase().includes(search.toLowerCase()))
+  );
+
+  return (
+    <div className="max-w-[1200px] mx-auto px-6 pt-28 pb-20">
+      <div className="mb-10">
+        <h1 className="heading text-[32px] mb-2">Course Catalog</h1>
+        <p className="text-text-muted text-[15px]">
+          15 courses. 28 real projects. From zero to shipped.
+        </p>
+      </div>
+
+      <div className="flex gap-3 mb-7 flex-wrap items-center">
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search courses..."
+          className="input-field max-w-[260px] px-4 py-2.5 text-sm"
+        />
+        <div className="flex gap-1.5 flex-wrap">
+          {TIERS.map((tier) => (
+            <button
+              key={tier}
+              className={`filter-pill ${filter === tier ? "active" : ""}`}
+              onClick={() => setFilter(tier)}
+            >
+              {TIER_LABELS[tier]}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">
+        {filtered.map((course, i) => (
+          <Reveal key={course.slug} delay={i * 50}>
+            <CourseCard
+              slug={course.slug}
+              title={course.title}
+              description={course.description}
+              tag={course.tag}
+              color={course.color}
+              price={course.price}
+              duration={course.duration}
+              module_count={course.module_count}
+            />
+          </Reveal>
+        ))}
+      </div>
+
+      {filtered.length === 0 && (
+        <div className="text-center py-20 text-text-muted">
+          No courses found. Try a different search or filter.
+        </div>
+      )}
+    </div>
+  );
+}

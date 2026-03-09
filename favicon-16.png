@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="56" viewBox="0 0 280 56">
+  <defs>
+    <linearGradient id="ga" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="gb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(0, 6)">
+    
+  <defs>
+    <linearGradient id="ga" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="gb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+  <rect x="6.952" y="20.812" width="11.879999999999999" height="11.879999999999999" rx="1.98" fill="url(#ga)"/>
+  <rect x="6.952" y="6.952" width="7.128" height="11.879999999999999" rx="1.98" fill="url(#ga)" opacity="0.7"/>
+  <rect x="25.168" y="11.308" width="11.879999999999999" height="11.879999999999999" rx="1.98" fill="url(#gb)"/>
+  <rect x="29.92" y="25.168" width="7.128" height="11.879999999999999" rx="1.98" fill="url(#gb)" opacity="0.7"/>
+
+  </g>
+  <text x="58" y="29.5" dominant-baseline="central"
+    font-family="'Helvetica Neue', 'Helvetica', Arial, sans-serif" font-weight="800" font-size="24" 
+    fill="#f0f0f3" letter-spacing="-1">Builder</text>
+  <text x="140" y="29.5" dominant-baseline="central"
+    font-family="'Helvetica Neue', 'Helvetica', Arial, sans-serif" font-weight="800" font-size="24" 
+    fill="#6366f1" letter-spacing="-1">OS</text>
+</svg>

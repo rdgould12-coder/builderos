@@ -1,0 +1,101 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
+import type { Profile } from "@/types";
+
+export function SettingsClient({ email, profile }: { email: string; profile: Profile | null }) {
+  const router = useRouter();
+  const [name, setName] = useState(profile?.full_name || "");
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  const handleSave = async () => {
+    setSaving(true);
+    const supabase = createClient();
+    await supabase
+      .from("profiles")
+      .update({ full_name: name })
+      .eq("id", profile?.id);
+    setSaving(false);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+    router.refresh();
+  };
+
+  const handleManageBilling = async () => {
+    if (!profile?.stripe_customer_id) return;
+    const res = await fetch("/api/checkout", {
+      method: "POST",
+      body: JSON.stringify({ action: "portal" }),
+      headers: { "Content-Type": "application/json" },
+    });
+    const { url } = await res.json();
+    if (url) window.location.href = url;
+  };
+
+  return (
+    <div className="max-w-[600px] mx-auto px-6 py-10">
+      <h1 className="heading text-[28px] mb-8">Settings</h1>
+
+      {/* Profile */}
+      <div className="glow-card mb-6">
+        <h3 className="text-base font-bold font-display mb-4">Profile</h3>
+        <div className="flex flex-col gap-3">
+          <div>
+            <label className="text-xs text-text-muted font-medium mb-1.5 block">Full Name</label>
+            <input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="input-field px-4 py-3 text-sm"
+            />
+          </div>
+          <div>
+            <label className="text-xs text-text-muted font-medium mb-1.5 block">Email</label>
+            <input
+              value={email}
+              disabled
+              className="input-field px-4 py-3 text-sm opacity-50 cursor-not-allowed"
+            />
+          </div>
+          <Button
+            onClick={handleSave}
+            disabled={saving}
+            size="sm"
+            className="w-fit mt-2"
+          >
+            {saved ? "Saved ✓" : saving ? "Saving..." : "Save Changes"}
+          </Button>
+        </div>
+      </div>
+
+      {/* Subscription */}
+      <div className="glow-card mb-6">
+        <h3 className="text-base font-bold font-display mb-4">Subscription</h3>
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="text-sm font-semibold capitalize">
+              {profile?.subscription_status || "free"} plan
+            </div>
+            <div className="text-xs text-text-muted mt-1">
+              {profile?.subscription_status === "free"
+                ? "Upgrade to Pro for full access"
+                : "You have full access to all courses"}
+            </div>
+          </div>
+          {profile?.stripe_customer_id ? (
+            <Button onClick={handleManageBilling} variant="ghost" size="sm">
+              Manage Billing
+            </Button>
+          ) : (
+            <Button size="sm" onClick={() => router.push("/pricing")}>
+              Upgrade
+            </Button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
